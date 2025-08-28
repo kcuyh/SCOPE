@@ -767,7 +767,6 @@
 // }
 "use client";
 import "./UnifiedGovSearch.responsive.css";
-
 import React, { useMemo, useState, useCallback, useMemo as useMemo2 } from "react";
 
 /* ===================== 백엔드 엔드포인트 ===================== */
@@ -899,6 +898,39 @@ const SearchBarRow = React.memo(function SearchBarRow({
   );
 });
 
+
+
+
+function ExpandableText({ text, limit = 110 }) {
+  const [expanded, setExpanded] = useState(false);
+  if (!text) return null;
+
+  const isTruncated = text.length > limit;
+  const displayText = expanded || !isTruncated ? text : text.slice(0, limit) + "…";
+
+  return (
+    <span>
+      {displayText}
+      {isTruncated && (
+        <button
+          onClick={() => setExpanded(!expanded)}
+          style={{
+            marginLeft: 6,
+            color: "#0ea5e9",
+            cursor: "pointer",
+            background: "none",
+            border: "none",
+            fontSize: "0.9em"
+          }}
+        >
+          {expanded ? "접기" : "더보기"}
+        </button>
+      )}
+    </span>
+  );
+}
+
+
 /* ----------- 도메인별 카드 렌더링 ----------- */
 /* 공공지원금 */
 /* ---------------------------------------------------
@@ -917,7 +949,7 @@ function ServiceCard({ it }) {
             {it.serviceField && <Chip>{it.serviceField}</Chip>}
           </div>
           <h3 style={{margin:0, fontSize:22}}>
-            {it.serviceName || it.title || "지원사업"}
+            <ExpandableText text={it.serviceName || it.title || "지원사업"} />
           </h3>
         </div>
         {it.maxAmount && (
@@ -926,22 +958,36 @@ function ServiceCard({ it }) {
       </div>
 
       {it.serviceSummary && (
-        <div style={{marginTop:16, color:"#334155"}}>{it.serviceSummary}</div>
+        <div style={{marginTop:16, color:"#334155"}}>
+          <ExpandableText text={it.serviceSummary} />
+        </div>
       )}
 
-      {/* ✅ 상세 항목: 데스크톱 2열 · 모바일 1열, 순서 고정 */}
+      {/* 상세 항목: 데스크톱 2열 · 모바일 1열 (svc-detail-grid 클래스는 CSS에 반응형 정의) */}
       <div className="svc-detail-grid">
         {it.supportTarget && (
-          <Row icon="👥" label={`대상: ${it.supportTarget}`} />
+          <Row
+            icon="👥"
+            label={<><b>대상:</b> <ExpandableText text={it.supportTarget} /></>}
+          />
         )}
         {it.selectionCriteria && (
-          <Row icon="📝" label={`선정요건: ${it.selectionCriteria}`} />
+          <Row
+            icon="📝"
+            label={<><b>선정요건:</b> <ExpandableText text={it.selectionCriteria} /></>}
+          />
         )}
         {it.applicationDeadline && (
-          <Row icon="📅" label={`신청기간: ${it.applicationDeadline}`} />
+          <Row
+            icon="📅"
+            label={<><b>신청기간:</b> <ExpandableText text={it.applicationDeadline} /></>}
+          />
         )}
         {it.institutionName && (
-          <Row icon="🏢" label={`기관: ${it.institutionName}`} />
+          <Row
+            icon="🏢"
+            label={<><b>기관:</b> <ExpandableText text={it.institutionName} /></>}
+          />
         )}
       </div>
 
@@ -971,15 +1017,30 @@ function EventCard({ it }) {
     <div className="card event-grid">
       <div className="event-main">
         <div style={{marginBottom:8}}><span className="badge">📅 채용행사</span></div>
-        <h3 style={{margin:"0 0 10px 0", fontSize:22}}>{it.eventNm || it.title || "채용행사"}</h3>
-        <div className="sub">📍 장소 {it.eventPlc || it.location || "-"}</div>
-        <div className="sub">🗓 일시 {it.eventTermDetail || it.date || "-"}</div>
-        <div className="sub">🏢 주최 {it.eventPlc || it.org || "-"}</div>
+        <h3 style={{margin:"0 0 10px 0", fontSize:22}}>
+          <ExpandableText text={it.eventNm || it.title || "채용행사"} />
+        </h3>
 
-        {it.joinCoWantedInfo && <div style={{marginTop:10}}>{it.joinCoWantedInfo}</div>}
+        <div className="sub">
+          📍 장소 <ExpandableText text={it.eventPlc || it.location || "-"} />
+        </div>
+        <div className="sub">
+          🗓 일시 <ExpandableText text={it.eventTermDetail || it.date || "-"} />
+        </div>
+        <div className="sub">
+          🏢 주최 <ExpandableText text={it.eventPlc || it.org || "-"} />
+        </div>
+
+        {it.joinCoWantedInfo && (
+          <div style={{marginTop:10}}>
+            <ExpandableText text={it.joinCoWantedInfo} />
+          </div>
+        )}
 
         <div style={{display:"flex", gap:8, marginTop:14, flexWrap:"wrap"}}>
-          <button className="cta" onClick={()=>window.open(it.url || it.link || "#","_blank")}>신청 바로가기</button>
+          <button className="cta" onClick={()=>window.open(it.url || it.link || "#","_blank")}>
+            신청 바로가기
+          </button>
           <button
             className="cta"
             style={{background:"#fff7ed", color:"#b45309", borderColor:"#fde68a"}}
@@ -993,29 +1054,44 @@ function EventCard({ it }) {
       <div className="event-side">
         <div className="card" style={{padding:16}}>
           <div className="h2" style={{margin:0, fontSize:16}}>📧 담당자</div>
-          {it.charger && <div className="sub">• {it.charger}</div>}
-          {it.email   && <div className="sub">• {it.email}</div>}
+          {it.charger && <div className="sub">• <ExpandableText text={it.charger} /></div>}
+          {it.email   && <div className="sub">• <ExpandableText text={it.email} /></div>}
         </div>
         <div className="card" style={{padding:16}}>
           <div className="h2" style={{margin:0, fontSize:16}}>📍 위치</div>
-          {it.visitPath && <div className="sub">{it.visitPath}</div>}
-          {it.eventPlc  && <div className="sub" style={{marginTop:6}}>{it.eventPlc}</div>}
+          {it.visitPath && <div className="sub"><ExpandableText text={it.visitPath} /></div>}
+          {it.eventPlc  && <div className="sub" style={{marginTop:6}}><ExpandableText text={it.eventPlc} /></div>}
         </div>
       </div>
     </div>
   );
 }
 
+
+
 /* 공채기업 */
 function CompanyCard({ it }) {
   return (
     <div className="card">
       <div style={{marginBottom:8}}><span className="badge">💼 공채</span></div>
-      <h3 style={{margin:"0 0 10px 0", fontSize:22}}>{it.coNm || it.companyName || it.title || "기업"}</h3>
-      {it.coIntroCont && <div className="sub">📍 기업설명: {it.coIntroCont}</div>}
-      {it.coClcdNm    && <div className="sub">🗓 {it.coClcdNm}</div>}
-      {it.mainBusiCont&& <div className="sub">🏢 {it.mainBusiCont}</div>}
-      {it.coIntroSummaryCont && <div style={{marginTop:10}}>{it.coIntroSummaryCont}</div>}
+      <h3 style={{margin:"0 0 10px 0", fontSize:22}}>
+        <ExpandableText text={it.coNm || it.companyName || it.title || "기업"} />
+      </h3>
+
+      {it.coIntroCont && (
+        <div className="sub">📍 기업설명: <ExpandableText text={it.coIntroCont} /></div>
+      )}
+      {it.coClcdNm    && (
+        <div className="sub">🗓 <ExpandableText text={it.coClcdNm} /></div>
+      )}
+      {it.mainBusiCont&& (
+        <div className="sub">🏢 <ExpandableText text={it.mainBusiCont} /></div>
+      )}
+      {it.coIntroSummaryCont && (
+        <div style={{marginTop:10}}>
+          <ExpandableText text={it.coIntroSummaryCont} />
+        </div>
+      )}
 
       <div style={{display:"flex", gap:8, marginTop:14, flexWrap:"wrap"}}>
         <button
@@ -1036,6 +1112,8 @@ function CompanyCard({ it }) {
     </div>
   );
 }
+
+
 
 /* ============================== MAIN ============================== */
 export default function UnifiedGovSearch() {
