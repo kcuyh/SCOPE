@@ -123,3 +123,18 @@
   .card{ padding:16px; }
   .search-row{ gap:8px; }
 }
+
+/* 공공지원금 상세 항목: 데스크톱 2열, 모바일 1열 */
+.svc-detail-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr; /* 데스크톱: 2열 */
+  gap: 12px;
+  margin-top: 14px;
+}
+
+/* 모바일: 1열로 변경 */
+@media (max-width: 768px) {
+  .svc-detail-grid {
+    grid-template-columns: 1fr; /* 모바일: 1열 */
+  }
+}

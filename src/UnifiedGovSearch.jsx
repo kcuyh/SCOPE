@@ -901,43 +901,69 @@ const SearchBarRow = React.memo(function SearchBarRow({
 
 /* ----------- 도메인별 카드 렌더링 ----------- */
 /* 공공지원금 */
+/* ---------------------------------------------------
+   [공공지원금] 카드
+--------------------------------------------------- */
 function ServiceCard({ it }) {
   return (
-    <div className="card">
-      <div style={{display:"flex", justifyContent:"space-between", gap:16, flexWrap:"wrap"}}>
+    <div style={{
+      background:"#fff", border:"1px solid #e6f3fb", borderRadius:18,
+      boxShadow:"0 2px 14px rgba(2,132,199,.08)", padding:22
+    }}>
+      <div style={{display:"flex", justifyContent:"space-between", gap:12, flexWrap:"wrap"}}>
         <div>
           <div style={{marginBottom:8, display:"flex", gap:8, flexWrap:"wrap"}}>
-            <span className="badge">💸 지원금</span>
+            <Chip>💸 지원금</Chip>
             {it.serviceField && <Chip>{it.serviceField}</Chip>}
           </div>
-          <h3 style={{margin:0, fontSize:22}}>{it.serviceName || it.title || "지원사업"}</h3>
+          <h3 style={{margin:0, fontSize:22}}>
+            {it.serviceName || it.title || "지원사업"}
+          </h3>
         </div>
-        {it.maxAmount && <div style={{color:"var(--primary-deep)", fontWeight:800}}>최대 {it.maxAmount}</div>}
+        {it.maxAmount && (
+          <div style={{color:"#0284c7", fontWeight:800}}>최대 {it.maxAmount}</div>
+        )}
       </div>
 
-      {it.serviceSummary && <div style={{marginTop:14, color:"#334155"}}>{it.serviceSummary}</div>}
+      {it.serviceSummary && (
+        <div style={{marginTop:16, color:"#334155"}}>{it.serviceSummary}</div>
+      )}
 
-      <div style={{display:"grid", gridTemplateColumns:"1fr 1fr", gap:12, marginTop:14}}>
-        <div>
-          {it.supportTarget && <Row icon="👥" label={`대상: ${it.supportTarget}`} />}
-          {it.applicationDeadline && <Row icon="📅" label={`신청기간: ${it.applicationDeadline}`} />}
-        </div>
-        <div>
-          {it.selectionCriteria && <Row icon="📋" label={`선정요건: ${it.selectionCriteria}`} />}
-          {it.institutionName && <Row icon="🏢" label={`기관: ${it.institutionName}`} />}
-        </div>
+      {/* ✅ 상세 항목: 데스크톱 2열 · 모바일 1열, 순서 고정 */}
+      <div className="svc-detail-grid">
+        {it.supportTarget && (
+          <Row icon="👥" label={`대상: ${it.supportTarget}`} />
+        )}
+        {it.selectionCriteria && (
+          <Row icon="📝" label={`선정요건: ${it.selectionCriteria}`} />
+        )}
+        {it.applicationDeadline && (
+          <Row icon="📅" label={`신청기간: ${it.applicationDeadline}`} />
+        )}
+        {it.institutionName && (
+          <Row icon="🏢" label={`기관: ${it.institutionName}`} />
+        )}
       </div>
 
       {it.tags && Array.isArray(it.tags) && it.tags.length > 0 && (
-        <div className="tags">
-          {it.tags.slice(0,6).map((t, i)=><span className="tag" key={i}>{t}</span>)}
+        <div style={{display:"flex", gap:8, flexWrap:"wrap", marginTop:14}}>
+          {it.tags.slice(0,6).map((t, i)=><Chip key={i}>{t}</Chip>)}
         </div>
       )}
 
-      <button className="cta" onClick={()=>window.open(it.detailsUrl || it.url || "#","_blank")}>자세히 보기</button>
+      <div style={{marginTop:16, display:"flex", gap:10}}>
+        <button
+          onClick={()=>window.open(it.detailsUrl || it.url || "#","_blank")}
+          style={{padding:"10px 14px", borderRadius:12, border:"1px solid #93c5fd",
+                  background:"#0ea5e9", color:"#fff", fontWeight:700, cursor:"pointer"}}
+        >
+          자세히 보기
+        </button>
+      </div>
     </div>
   );
 }
+
 
 /* 채용행사 */
 function EventCard({ it }) {
