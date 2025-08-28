@@ -1,0 +1,157 @@
+:root{
+  --brand: #5a5cf0;         /* 메인 보라 */
+  --brand-deep: #4f46e5;
+  --text: #0f172a;
+  --muted: #64748b;
+  --border: #e5e7eb;
+  --card: #ffffff;
+  --accent-bg: #eef2ff;
+  --radius-xl: 16px;
+  --radius-lg: 12px;
+  --shadow: 0 10px 30px rgba(59, 72, 255, 0.12);
+}
+
+.wrap{
+  width: min(420px, 100vw);
+  margin: 0 auto;
+  padding: 20px 18px 28px;
+  font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, "Apple SD Gothic Neo", "Noto Sans KR", sans-serif;
+  color: var(--text);
+  background: #fff;
+}
+
+.brand{
+  margin: 8px 0 14px;
+  font-weight: 900;
+  font-style: italic;
+  color: var(--brand);
+  font-size: 28px;
+  letter-spacing: 0.12em;
+}
+
+.hero{
+  border: 4px solid var(--brand);
+  border-radius: var(--radius-xl);
+  overflow: hidden;
+  background: #fff;
+  box-shadow: var(--shadow);
+}
+
+.heroSvg{
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.heading{
+  margin: 18px 4px 6px;
+  font-size: 24px;
+  line-height: 1.35;
+  font-weight: 900;
+  letter-spacing: -0.01em;
+}
+
+.accent{
+  color: var(--brand);
+}
+
+.sub{
+  margin: 10px 4px 14px;
+  color: var(--muted);
+  font-size: 14px;
+  line-height: 1.6;
+}
+
+.cta{
+  width: 100%;
+  margin-top: 6px;
+  padding: 14px 16px;
+  border: none;
+  border-radius: 999px;
+  background: linear-gradient(180deg, var(--brand) 0%, var(--brand-deep) 100%);
+  color: #fff;
+  font-weight: 800;
+  font-size: 16px;
+  letter-spacing: 0.02em;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  cursor: pointer;
+  box-shadow: var(--shadow);
+}
+
+.cta:active{ transform: translateY(1px); }
+
+.ctaArrow{ font-weight: 900; }
+
+.dividerSoft{
+  height: 28px;
+  background: transparent;
+}
+
+.feature{
+  text-align: center;
+  margin: 18px 0 8px;
+}
+
+.iconCircle, .iconCircleAlt{
+  width: 84px;
+  height: 84px;
+  margin: 0 auto 10px;
+  border-radius: 999px;
+  display: grid;
+  place-items: center;
+  color: var(--brand);
+}
+
+.iconCircle{ background: #dff6ff; }     /* 연한 하늘색 느낌 */
+.iconCircleAlt{ background: #e9f0ff; }  /* 연한 블루 */
+
+.featureTitle{
+  font-size: 16px;
+  font-weight: 800;
+  margin: 4px 0 6px;
+}
+
+.featureDesc{
+  color: var(--muted);
+  font-size: 13px;
+  line-height: 1.6;
+  margin: 0 6px;
+}
+
+.categoriesWrap{
+  margin-top: 22px;
+  text-align: center;
+}
+
+.categoriesTitle{
+  font-size: 12px;
+  color: #111827;
+  letter-spacing: 0.16em;
+  font-weight: 800;
+  margin-bottom: 8px;
+}
+
+.categoryList{
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  color: #0b1021;
+  display: grid;
+  gap: 10px;
+  font-weight: 600;
+}
+
+.bottomHairline{
+  height: 1px;
+  background: var(--border);
+  margin-top: 28px;
+}
+
+/* 살짝 더 작은 화면 대응 */
+@media (max-width: 360px){
+  .heading{ font-size: 22px; }
+  .brand{ font-size: 26px; }
+}
